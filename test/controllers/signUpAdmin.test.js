@@ -61,7 +61,7 @@ describe('Register a administrator user', () => {
       .post('/admin/users')
       .set('token', '')
       .send(dataUser.signInAdmin);
-    expect(res.statusCode).toBe(statusCodes.badRequest);
+    expect(res.statusCode).toBe(statusCodes.unauthorized);
     done();
   });
 

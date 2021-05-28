@@ -4,7 +4,7 @@ const validateToken = (req, res, next) => {
   try {
     const token = req.header('token');
     if (!token) {
-      throw errors.badRequest('Token empty.');
+      throw errors.unauthorized('Token empty.');
     }
     next();
   } catch (err) {

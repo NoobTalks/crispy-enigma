@@ -40,7 +40,7 @@ module.exports = {
           }
         },
         400: {
-          description: 'Fields do not meet the conditions imposed or token empty.',
+          description: 'Fields do not meet the conditions imposed.',
           content: {
             'application/json': {
               schema: {
@@ -50,7 +50,7 @@ module.exports = {
           }
         },
         401: {
-          description: 'Insufficient permissions.',
+          description: 'Insufficient permissions or token empty.',
           content: {
             'application/json': {
               schema: {
