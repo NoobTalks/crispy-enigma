@@ -36,6 +36,16 @@ class UserService {
       throw errors.databaseError(err);
     }
   }
+
+  static async updateUser(id, user) {
+    try {
+      user.password = utils.encryptPassword(user.password);
+      const userUpdate = await db.User.update(user, { where: { id } });
+      return userUpdate;
+    } catch (err) {
+      throw errors.databaseError(err);
+    }
+  }
 }
 
 module.exports = UserService;

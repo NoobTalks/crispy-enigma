@@ -13,7 +13,7 @@ describe('Get list users', () => {
   });
 
   it('should get list of 5 users', async done => {
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 7; i++) {
       dataUser.signUp.email = `yesid${i}@wolox.com.co`;
       await request(app)
         .post('/users')
@@ -25,30 +25,30 @@ describe('Get list users', () => {
     done();
   });
 
-  it('should get list of 10 users', async done => {
-    for (let i = 0; i < 10; i++) {
+  it('should get list of 7 users', async done => {
+    for (let i = 0; i < 7; i++) {
       dataUser.signUp.email = `yesid${i}@wolox.com.co`;
       await request(app)
         .post('/users')
         .send(dataUser.signUp);
     }
-    const res = await request(app).get('/users?limit=10');
+    const res = await request(app).get('/users?limit=7');
     const compare = JSON.parse(res.text);
-    expect(compare.response.users.length).toBe(10);
+    expect(compare.response.users.length).toBe(7);
     done();
   });
 
   it('should get list last 2 users', async done => {
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 7; i++) {
       dataUser.signUp.email = `yesid${i}@wolox.com.co`;
       await request(app)
         .post('/users')
         .send(dataUser.signUp);
     }
-    const res = await request(app).get('/users?limit=2&since=8');
+    const res = await request(app).get('/users?limit=2&since=5');
     const compare = JSON.parse(res.text);
-    expect(compare.response.users[0].email).toBe('yesid8@wolox.com.co');
-    expect(compare.response.users[1].email).toBe('yesid9@wolox.com.co');
+    expect(compare.response.users[0].email).toBe('yesid5@wolox.com.co');
+    expect(compare.response.users[1].email).toBe('yesid6@wolox.com.co');
     done();
   });
 
