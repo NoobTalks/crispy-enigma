@@ -34,8 +34,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
-  // User.associate = models => {
-  // associations can be defined here
-  // };
+  /*
+  User.associate = models => {
+    // associations can be defined here
+  };
+  */
   return User;
 };
