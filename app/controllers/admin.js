@@ -4,19 +4,22 @@ const { statusCodes, errors } = require('../helpers');
 const { adminMapper } = require('../mappers');
 const { UserService } = require('../services');
 
+const roleAdmin = 'administrator';
+
 const signUpAdmin = async (req, res, next) => {
   try {
     const token = req.header('token');
     const tokenDecode = jwt.decode(token, process.env.JWT_KEY_SECRET);
     const userInfo = await UserService.getUser({ id: tokenDecode.id });
-    if (
-      tokenDecode.firstName !== userInfo.firstName ||
-      tokenDecode.lastName !== userInfo.lastName ||
+    const conditions = [
+      tokenDecode.firstName !== userInfo.firstName,
+      tokenDecode.lastName !== userInfo.lastName,
       tokenDecode.role !== userInfo.role
-    ) {
-      throw errors.unauthorized('El token no es válido o es antiguo');
+    ];
+    if (conditions.some(condition => !!condition)) {
+      throw errors.unauthorized('The token is invalid or old');
     }
-    if (userInfo.role !== 'administrator') {
+    if (userInfo.role !== roleAdmin) {
       throw errors.unauthorized(`User ${userInfo.email} isn't administrator`);
     }
     const adminDTO = adminMapper.signInDTO(req.body);
