@@ -52,7 +52,7 @@ exports.GetAlbums = {
           type: 'string',
           example: 'Token empty.'
         },
-        internal_code: {
+        internalCode: {
           type: 'string',
           example: 'unauthorized'
         }

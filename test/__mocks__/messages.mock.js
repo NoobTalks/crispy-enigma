@@ -11,7 +11,7 @@ exports.messages = {
         }
       }
     ],
-    internal_code: 'badRequest'
+    internalCode: 'badRequest'
   },
   passwordRequired: {
     message: [
@@ -25,7 +25,7 @@ exports.messages = {
         }
       }
     ],
-    internal_code: 'badRequest'
+    internalCode: 'badRequest'
   },
   limitNegative: {
     message: [
@@ -41,7 +41,7 @@ exports.messages = {
         }
       }
     ],
-    internal_code: 'badRequest'
+    internalCode: 'badRequest'
   },
   sinceNegative: {
     message: [
@@ -57,18 +57,18 @@ exports.messages = {
         }
       }
     ],
-    internal_code: 'badRequest'
+    internalCode: 'badRequest'
   },
   albumBuy: {
     message: 'you already bought this album',
-    internal_code: 'conflict'
+    internalCode: 'conflict'
   },
   tokenEmpty: {
     message: 'Token empty.',
-    internal_code: 'unauthorized'
+    internalCode: 'unauthorized'
   },
   idNotValid: {
     message: 'el ID ingresado no es valido',
-    internal_code: 'badRequest'
+    internalCode: 'badRequest'
   }
 };

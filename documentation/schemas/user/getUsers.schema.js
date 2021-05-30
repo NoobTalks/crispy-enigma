@@ -138,7 +138,7 @@ exports.GetUsers = {
             }
           }
         },
-        internal_code: {
+        internalCode: {
           type: 'string',
           example: 'badRequest'
         }

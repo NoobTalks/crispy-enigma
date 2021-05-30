@@ -91,7 +91,7 @@ describe('Get list users', () => {
       .then(val => {
         const newMessage = {
           message: [...messages.limitNegative.message, ...messages.sinceNegative.message],
-          internal_code: messages.sinceNegative.internal_code
+          internalCode: messages.sinceNegative.internalCode
         };
         expect(val.body).toEqual(newMessage);
         done();

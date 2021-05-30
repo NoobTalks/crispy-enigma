@@ -31,6 +31,19 @@ exports.BuyAlbum = {
         }
       }
     },
+    404: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'string',
+          example: 'Album not found'
+        },
+        internalCode: {
+          type: 'string',
+          example: 'notFound'
+        }
+      }
+    },
     409: {
       type: 'object',
       properties: {
@@ -38,7 +51,7 @@ exports.BuyAlbum = {
           type: 'string',
           example: 'you already bought this album'
         },
-        internal_code: {
+        internalCode: {
           type: 'string',
           example: 'conflict'
         }

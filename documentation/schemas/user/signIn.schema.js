@@ -49,7 +49,7 @@ exports.SignIn = {
             }
           }
         },
-        internal_code: {
+        internalCode: {
           type: 'string',
           example: 'badRequest'
         }
@@ -62,7 +62,7 @@ exports.SignIn = {
           type: 'string',
           example: 'Email or password invalid.'
         },
-        internal_code: {
+        internalCode: {
           type: 'string',
           example: 'unauthorized'
         }
@@ -75,7 +75,7 @@ exports.SignIn = {
           type: 'string',
           example: 'User is not registered.'
         },
-        internal_code: {
+        internalCode: {
           type: 'string',
           example: 'conflict'
         }

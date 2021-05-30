@@ -81,7 +81,7 @@ describe('sign in user', () => {
       .then(res => {
         const newMessage = {
           message: [...messages.emailRequired.message, ...messages.passwordRequired.message],
-          internal_code: messages.emailRequired.internal_code
+          internalCode: messages.emailRequired.internalCode
         };
         expect(res.body).toEqual(newMessage);
         done();

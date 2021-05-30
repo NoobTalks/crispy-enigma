@@ -37,6 +37,16 @@ module.exports = {
             }
           }
         },
+        404: {
+          description: 'If the album does not exist or the entered id was not found',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/BuyAlbum/responses/404'
+              }
+            }
+          }
+        },
         409: {
           description: 'The album you are trying to buy has already been purchased.',
           content: {
