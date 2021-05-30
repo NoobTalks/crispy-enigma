@@ -1,28 +1,67 @@
 const request = require('supertest');
 const axios = require('axios');
 const app = require('../../app');
-const { listAlbums } = require('../__mocks__/album.mock');
-const { dataUser } = require('../__mocks__/user.mock');
+const { messages, dataUser, albums } = require('../__mocks__');
 const { statusCodes } = require('../../app/helpers');
 
 jest.mock('axios');
-axios.get.mockReturnValue({ data: listAlbums[1] });
+axios.get.mockReturnValue({ data: albums.listAlbums[1] });
 
 describe('Test buy album', () => {
-  beforeAll(async () => {
+  beforeEach(async () => {
     await request(app)
       .post('/users')
       .send(dataUser.signUp);
   });
 
   it('should buy a album', async done => {
-    const token = await request(app)
+    const { token } = await request(app)
       .post('/users/sessions')
       .send(dataUser.signIn)
-      .then(value => value);
+      .then(res => res.body);
     request(app)
-      .post('/album/1')
+      .get('/albums/1')
       .set('token', token)
       .expect(statusCodes.successful, done);
+  });
+
+  it('should reject to buy an album because it is bought', async done => {
+    const { token } = await request(app)
+      .post('/users/sessions')
+      .send(dataUser.signIn)
+      .then(res => res.body);
+    await request(app)
+      .get('/albums/2')
+      .set('token', token);
+    request(app)
+      .get('/albums/2')
+      .set('token', token)
+      .then(res => {
+        expect(res.body).toEqual(messages.albumBuy);
+        done();
+      });
+  });
+
+  it('should reject for token empty', done => {
+    request(app)
+      .get('/albums/2')
+      .then(res => {
+        expect(res.body).toEqual(messages.tokenEmpty);
+        done();
+      });
+  });
+
+  it('should reject for not having a valid id', async done => {
+    const { token } = await request(app)
+      .post('/users/sessions')
+      .send(dataUser.signIn)
+      .then(res => res.body);
+    request(app)
+      .get('/albums/-1')
+      .set('token', token)
+      .then(res => {
+        expect(res.body).toEqual(messages.idNotValid);
+        done();
+      });
   });
 });

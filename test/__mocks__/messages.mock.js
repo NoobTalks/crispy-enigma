@@ -30,12 +30,13 @@ exports.messages = {
   limitNegative: {
     message: [
       {
-        message: '"limit" must be a positive number',
+        message: '"limit" must be greater than or equal to 1',
         path: ['limit'],
-        type: 'number.positive',
+        type: 'number.min',
         context: {
-          label: 'limit',
+          limit: 1,
           value: -2,
+          label: 'limit',
           key: 'limit'
         }
       }
@@ -45,16 +46,29 @@ exports.messages = {
   sinceNegative: {
     message: [
       {
-        message: '"since" must be a positive number',
+        message: '"since" must be greater than or equal to 1',
         path: ['since'],
-        type: 'number.positive',
+        type: 'number.min',
         context: {
-          label: 'since',
+          limit: 1,
           value: -2,
+          label: 'since',
           key: 'since'
         }
       }
     ],
+    internal_code: 'badRequest'
+  },
+  albumBuy: {
+    message: 'you already bought this album',
+    internal_code: 'conflict'
+  },
+  tokenEmpty: {
+    message: 'Token empty.',
+    internal_code: 'unauthorized'
+  },
+  idNotValid: {
+    message: 'el ID ingresado no es valido',
     internal_code: 'badRequest'
   }
 };

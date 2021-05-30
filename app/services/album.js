@@ -9,8 +9,12 @@ class AlbumService {
   }
 
   static async getAlbum(id) {
-    const { data } = await axios.get(`https://jsonplaceholder.typicode.com/albums/${id}`);
-    return data;
+    try {
+      const { data } = await axios.get(`https://jsonplaceholder.typicode.com/albums/${id}`);
+      return data;
+    } catch {
+      throw errors.notFound('Album not found');
+    }
   }
 
   static async buyAlbum(data) {

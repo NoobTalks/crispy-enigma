@@ -9,6 +9,9 @@ exports.badRequest = message => internalError(message, exports.BAD_REQUEST);
 exports.UNAUTHORIZED = 'unauthorized';
 exports.unauthorized = message => internalError(message, exports.UNAUTHORIZED);
 
+exports.NOT_FOUND = 'notFound';
+exports.notFound = message => internalError(message, exports.NOT_FOUND);
+
 exports.CONFLICT_SERVER = 'conflict';
 exports.conflictServer = message => internalError(message, exports.CONFLICT_SERVER);
 

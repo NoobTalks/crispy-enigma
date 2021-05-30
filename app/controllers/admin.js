@@ -8,7 +8,7 @@ const signUpAdmin = async (req, res, next) => {
   try {
     const token = req.header('token');
     const tokenDecode = jwt.decode(token, process.env.JWT_KEY_SECRET);
-    const userInfo = await UserService.getUser({ id: tokenDecode.id });
+    const userInfo = await UserService.getUser({ email: tokenDecode.email });
     if (
       tokenDecode.firstName !== userInfo.firstName ||
       tokenDecode.lastName !== userInfo.lastName ||

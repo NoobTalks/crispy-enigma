@@ -45,52 +45,56 @@ describe('Get list users', () => {
         .post('/users')
         .send(dataUser.signUp);
     }
-    const res = await request(app).get('/users?limit=2&since=5');
-    const compare = JSON.parse(res.text);
-    expect(compare.response.users[0].email).toBe('yesid5@wolox.com.co');
-    expect(compare.response.users[1].email).toBe('yesid6@wolox.com.co');
+    const res = await request(app)
+      .get('/users?limit=2&since=5')
+      .then(val => val.body);
+    expect(res.response.users[0].email).toBe('yesid5@wolox.com.co');
+    expect(res.response.users[1].email).toBe('yesid6@wolox.com.co');
     done();
   });
 
   it('should reject for limit negative', async done => {
-    const res = await request(app).get('/users?limit=-2');
-    const compare = JSON.parse(res.text);
-    expect(compare).toEqual(messages.limitNegative);
+    const res = await request(app)
+      .get('/users?limit=-2')
+      .then(val => val.body);
+    expect(res).toEqual(messages.limitNegative);
     done();
   });
 
   it('should reject for since negative', async done => {
-    const res = await request(app).get('/users?since=-2');
-    const compare = JSON.parse(res.text);
-    expect(compare).toEqual(messages.sinceNegative);
+    const res = await request(app)
+      .get('/users?since=-2')
+      .then(val => val.body);
+    expect(res).toEqual(messages.sinceNegative);
     done();
   });
 
   it('should reject for since negative and limit positive', async done => {
-    const res = await request(app).get('/users?since=-2&limit=2');
-    const compare = JSON.parse(res.text);
-    expect(compare).toEqual(messages.sinceNegative);
+    const res = await request(app)
+      .get('/users?since=-2&limit=2')
+      .then(val => val.body);
+    expect(res).toEqual(messages.sinceNegative);
     done();
   });
 
   it('should reject for limit negative and since positive', async done => {
-    const res = await request(app).get('/users?since=2&limit=-2');
-    const compare = JSON.parse(res.text);
-    expect(compare).toEqual(messages.limitNegative);
+    const res = await request(app)
+      .get('/users?since=2&limit=-2')
+      .then(val => val.body);
+    expect(res).toEqual(messages.limitNegative);
     done();
   });
 
-  it('should reject with message of since negative', async done => {
-    const res = await request(app).get('/users?since=-2&limit=-2');
-    const compare = JSON.parse(res.text);
-    expect(compare).toEqual(messages.limitNegative);
-    done();
-  });
-
-  it('should reject with message of limit negative', async done => {
-    const res = await request(app).get('/users?since=-2&limit=-2');
-    const compare = JSON.parse(res.text);
-    expect(compare).toEqual(messages.limitNegative);
-    done();
+  it('should reject with message of since and limit negative', async done => {
+    await request(app)
+      .get('/users?since=-2&limit=-2')
+      .then(val => {
+        const newMessage = {
+          message: [...messages.limitNegative.message, ...messages.sinceNegative.message],
+          internal_code: messages.sinceNegative.internal_code
+        };
+        expect(val.body).toEqual(newMessage);
+        done();
+      });
   });
 });

@@ -7,7 +7,7 @@ const { AlbumService, UserService } = require('../services');
 const getAlbums = async (req, res, next) => {
   try {
     const token = utils.decodeToken(req.header('token'));
-    const { error, email, firstName, lastName, role } = await UserService.getUser({ id: token.id });
+    const { error, email, firstName, lastName, role } = await UserService.getUser({ email: token.email });
     if (error) {
       throw errors.unauthorized('User is not register in the DB.');
     }
