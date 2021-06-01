@@ -1,26 +1,22 @@
-const jwt = require('jwt-simple');
 const { logger } = require('express-wolox-logger');
-const { statusCodes, errors } = require('../helpers');
+const { statusCodes, errors, ROLES, utils } = require('../helpers');
 const { userMapper } = require('../mappers');
 const { UserService } = require('../services');
 
-const roleAdmin = 'administrator';
-
 const signUpAdmin = async (req, res, next) => {
   try {
-    const token = req.header('token');
-    const tokenDecode = jwt.decode(token, process.env.JWT_KEY_SECRET);
-    const userInfo = await UserService.getUser({ id: tokenDecode.id });
-    const conditions = [
-      tokenDecode.firstName !== userInfo.firstName,
-      tokenDecode.lastName !== userInfo.lastName,
-      tokenDecode.role !== userInfo.role
-    ];
-    if (conditions.some(condition => !!condition)) {
-      throw errors.unauthorized('The token is invalid or old');
+    const token = utils.decodeToken(req.header('token'));
+    // eslint-disable-next-line no-unused-vars
+    const { error, password, ...user } = await UserService.getUser({ id: token.id });
+    if (error) {
+      throw errors.unauthorized('User does not exist in the DB.');
     }
-    if (userInfo.role !== roleAdmin) {
-      throw errors.unauthorized(`User ${userInfo.email} isn't administrator`);
+    const verifyUser = utils.isObjectEqual(token, user);
+    if (!verifyUser) {
+      throw errors.unauthorized('Token data does not match DB');
+    }
+    if (user.role !== ROLES.admin) {
+      throw errors.unauthorized(`User ${user.email} isn't administrator`);
     }
     const adminDTO = userMapper.signUpAdminDTO(req.body);
     const { id } = await UserService.getUser({ email: adminDTO.email });

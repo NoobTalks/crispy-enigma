@@ -1,10 +1,9 @@
 const axios = require('axios').default;
-
-const albumSupplier = 'https://jsonplaceholder.typicode.com/albums';
+const { ALBUM_SUPPLIER } = require('../helpers');
 
 class AlbumService {
   static async getAlbums() {
-    const { data } = await axios.get(albumSupplier);
+    const { data } = await axios.get(ALBUM_SUPPLIER);
     return data;
   }
 }

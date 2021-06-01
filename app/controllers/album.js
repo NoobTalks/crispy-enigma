@@ -1,22 +1,22 @@
 const { logger } = require('express-wolox-logger');
 const { utils, errors } = require('../helpers');
-const { compareData } = require('../helpers/utils');
 const { AlbumService, UserService } = require('../services');
 
 const getAlbums = async (req, res, next) => {
   try {
     const token = utils.decodeToken(req.header('token'));
-    const { error, id, email, firstName, lastName, role } = await UserService.getUser({ id: token.id });
+    // eslint-disable-next-line no-unused-vars
+    const { error, password, ...user } = await UserService.getUser({ id: token.id });
     if (error) {
-      throw errors.unauthorized('Usuario no existe en la DB.');
+      throw errors.unauthorized('User does not exist in the DB.');
     }
-    const verifyUser = compareData(token, { id, firstName, lastName, role, email });
+    const verifyUser = utils.isObjectEqual(token, user);
     if (!verifyUser) {
-      throw errors.unauthorized('Los datos del token no coinciden con los de la DB');
+      throw errors.unauthorized('Token data does not match DB');
     }
     const albums = await AlbumService.getAlbums();
 
-    logger.info(`Usuario ${email} solicito traer todos los albums`);
+    logger.info(`User ${user.email} request to bring all the albums`);
     return res.json(albums);
   } catch (err) {
     return next(err);

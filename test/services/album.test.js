@@ -1,4 +1,5 @@
 const axios = require('axios');
+const { ALBUM_SUPPLIER } = require('../../app/helpers');
 const { AlbumService } = require('../../app/services');
 const { listAlbums } = require('../__mocks__');
 
@@ -8,7 +9,7 @@ axios.get.mockReturnValue({ data: listAlbums });
 describe('Album service', () => {
   it('should request to external API', async () => {
     await AlbumService.getAlbums();
-    expect(axios.get).toHaveBeenCalledWith('https://jsonplaceholder.typicode.com/albums');
+    expect(axios.get).toHaveBeenCalledWith(ALBUM_SUPPLIER);
   });
 
   it('should get a list of albums', async () => {
