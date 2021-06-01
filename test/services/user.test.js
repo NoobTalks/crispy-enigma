@@ -1,5 +1,6 @@
 /* eslint-disable global-require */
 const UserService = require('../../app/services/user');
+const { dataUser } = require('../__mocks__');
 
 describe('User service', () => {
   beforeEach(() => {
@@ -8,22 +9,19 @@ describe('User service', () => {
     const { User } = models;
     User.create.mockImplementationOnce(user => Promise.resolve(user));
   });
-  const dataUser = {
-    lastName: 'Hernandez',
-    firstName: 'Yesid',
-    email: 'yesid7@wolox.com.co',
-    password: '123456789'
-  };
+
+  const oldInfo = { ...dataUser.signUpAdmin };
+  const newInfo = { ...oldInfo, email: 'newemail@wolox.com.co' };
 
   it('should register user', async () => {
-    const { email } = await UserService.signUp(dataUser);
-    expect(email).toBe(dataUser.email);
+    const { email } = await UserService.signUp(dataUser.signUpAdmin);
+    expect(email).toBe(dataUser.signUpAdmin.email);
   });
 
   it('should reject register user', async () => {
     try {
-      await UserService.signUp(dataUser);
-      await UserService.signUp(dataUser);
+      await UserService.signUp(dataUser.signUpAdmin);
+      await UserService.signUp(dataUser.signUpAdmin);
     } catch (err) {
       return expect(err.internalCode).toEqual('databaseError');
     }
@@ -32,8 +30,8 @@ describe('User service', () => {
 
   it('should getting users', async () => {
     for (let i = 0; i < 5; i++) {
-      dataUser.email = `yesid${i}@wolox.com.co`;
-      await UserService.signUp(dataUser);
+      dataUser.signUpAdmin.email = `yesid${i}@wolox.com.co`;
+      await UserService.signUp(dataUser.signUpAdmin);
     }
     const res = await UserService.getUsers();
     return expect(res.users.length).toBe(5);
@@ -49,9 +47,9 @@ describe('User service', () => {
   });
 
   it('should get a user', async () => {
-    await UserService.signUp(dataUser);
-    const { firstName } = await UserService.getUser({ email: dataUser.email });
-    return expect(firstName).toBe(dataUser.firstName);
+    await UserService.signUp(dataUser.signUpAdmin);
+    const { firstName } = await UserService.getUser({ email: dataUser.signUpAdmin.email });
+    return expect(firstName).toBe(dataUser.signUpAdmin.firstName);
   });
 
   it('should reject when getting a user', async () => {
@@ -61,5 +59,21 @@ describe('User service', () => {
       return expect(err.internalCode).toBe('databaseError');
     }
     throw new Error('invalid parameter');
+  });
+
+  it('should update a user', async () => {
+    await UserService.signUp(oldInfo);
+    const { id } = await UserService.getUser({ email: oldInfo.email });
+    const res = await UserService.updateUser(id, newInfo);
+    expect(res).toBeTruthy();
+  });
+
+  it('should reject update a user', async () => {
+    try {
+      await UserService.updateUser(1);
+    } catch (err) {
+      return expect(err.internalCode).toBe('databaseError');
+    }
+    throw new Error('Failed to update user, user not exist.');
   });
 });

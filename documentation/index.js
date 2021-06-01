@@ -31,6 +31,10 @@ module.exports = {
     {
       name: 'Users',
       description: 'Everything about users'
+    },
+    {
+      name: 'Admin',
+      description: 'Everything about Admin'
     }
   ],
   paths,

@@ -1,12 +1,13 @@
 // const controller = require('./controllers/controller');
 const redoc = require('redoc-express');
 const { healthCheck } = require('./controllers/healthCheck');
-const { signUp, signIn, listUsers } = require('./controllers/users');
+const { signUp, signIn, listUsers, signUpAdmin } = require('./controllers');
 const {
   validateSignUpDTO,
   validateSignInDTO,
   validateGetUsersDTO
 } = require('./middlewares/validators/user');
+const { validateToken } = require('./middlewares/validators/token');
 const { jsonSwagger } = require('./controllers/documentation');
 
 exports.init = app => {
@@ -16,4 +17,5 @@ exports.init = app => {
   app.get('/users', [validateGetUsersDTO], listUsers);
   app.post('/users', [validateSignUpDTO], signUp);
   app.post('/users/sessions', [validateSignInDTO], signIn);
+  app.post('/admin/users', [validateToken, validateSignUpDTO], signUpAdmin);
 };
