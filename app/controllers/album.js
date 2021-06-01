@@ -4,6 +4,8 @@ const { compareData } = require('../helpers/utils');
 const { albumMapper } = require('../mappers');
 const { AlbumService, UserService } = require('../services');
 
+const roleAdmin = 'administrator';
+
 const getAlbums = async (req, res, next) => {
   try {
     const token = utils.decodeToken(req.header('token'));
@@ -52,7 +54,42 @@ const buyAlbum = async (req, res, next) => {
   }
 };
 
+const getMyAlbums = async (req, res, next) => {
+  try {
+    const token = utils.decodeToken(req.header('token'));
+    const { error, id, email, firstName, lastName, role } = await UserService.getUser({
+      email: token.email
+    });
+    if (error) {
+      throw errors.notFound('User is not register in the DB.');
+    }
+    const verifyUser = compareData(token, { firstName, lastName, role, email });
+    if (!verifyUser) {
+      throw errors.unauthorized('the data of token it does not match with the data of the DB');
+    }
+    const { user_id } = req.params;
+    if (roleAdmin !== role && Number(user_id) !== id) {
+      throw errors.unauthorized(
+        `You can only see your album, Direct to http://localhost:${process.env.PORT}/users/${id}/albums`
+      );
+    }
+    const userInfo = await UserService.getUser({ id: user_id });
+    if (userInfo.error) {
+      throw errors.notFound(`user with ID ${user_id} not found`);
+    }
+    const myAlbums = await AlbumService.getMyAlbums(user_id);
+    const msg = {
+      user: userInfo.email,
+      albums: myAlbums
+    };
+    return res.json(msg);
+  } catch (err) {
+    return next(err);
+  }
+};
+
 module.exports = {
   getAlbums,
-  buyAlbum
+  buyAlbum,
+  getMyAlbums
 };

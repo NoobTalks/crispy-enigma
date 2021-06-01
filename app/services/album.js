@@ -29,7 +29,10 @@ class AlbumService {
   static async getMyAlbums(idUser) {
     try {
       const album = await db.Sale.findAll({ where: { idUser } });
-      return album;
+      return album.map(val => {
+        const description = JSON.parse(val.description);
+        return { idAlbum: val.idAlbum, ...description };
+      });
     } catch (err) {
       throw errors.databaseError(err);
     }
