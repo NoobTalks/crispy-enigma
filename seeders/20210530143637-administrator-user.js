@@ -11,13 +11,5 @@ module.exports = {
         role: 'administrator'
       }
     ]),
-  /*      Add altering commands here.      Return a promise to correctly handle asynchronicity.      Example:      return queryInterface.bulkInsert('People', [{        name: 'John Doe',        isBetaMember: false      }], {});
-   */ down: queryInterface => queryInterface.bulkDelete('Users', null, {})
-  /*
-      Add reverting commands here.
-      Return a promise to correctly handle asynchronicity.
-
-      Example:
-      return queryInterface.bulkDelete('People', null, {});
-    */
+  down: queryInterface => queryInterface.bulkDelete('Users', null, {})
 };
