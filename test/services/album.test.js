@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { ALBUM_SUPPLIER } = require('../../app/helpers');
+const { ALBUM_SUPPLIER } = require('../../app/constants');
 const { AlbumService } = require('../../app/services');
 const { listAlbums } = require('../__mocks__');
 

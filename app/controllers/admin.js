@@ -1,13 +1,13 @@
 const { logger } = require('express-wolox-logger');
-const { statusCodes, errors, ROLES, utils } = require('../helpers');
+const { ROLES } = require('../constants');
+const { statusCodes, errors, utils } = require('../helpers');
 const { userMapper } = require('../mappers');
 const { UserService } = require('../services');
 
 const signUpAdmin = async (req, res, next) => {
   try {
     const token = utils.decodeToken(req.header('token'));
-    // eslint-disable-next-line no-unused-vars
-    const { error, password, ...user } = await UserService.getUser({ id: token.id });
+    const { error, ...user } = await UserService.getUser({ id: token.id }, ['password']);
     if (error) {
       throw errors.unauthorized('User does not exist in the DB.');
     }

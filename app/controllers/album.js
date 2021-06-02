@@ -5,8 +5,7 @@ const { AlbumService, UserService } = require('../services');
 const getAlbums = async (req, res, next) => {
   try {
     const token = utils.decodeToken(req.header('token'));
-    // eslint-disable-next-line no-unused-vars
-    const { error, password, ...user } = await UserService.getUser({ id: token.id });
+    const { error, ...user } = await UserService.getUser({ id: token.id }, ['password']);
     if (error) {
       throw errors.unauthorized('User does not exist in the DB.');
     }

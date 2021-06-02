@@ -1,4 +1,4 @@
-const { ROLES } = require('../helpers');
+const { ROLES } = require('../constants');
 
 exports.signUpDTO = (params = {}) => {
   const { first_name, last_name, email, password } = params;

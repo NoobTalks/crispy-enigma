@@ -1,5 +1,5 @@
 const axios = require('axios').default;
-const { ALBUM_SUPPLIER } = require('../helpers');
+const { ALBUM_SUPPLIER } = require('../constants');
 
 class AlbumService {
   static async getAlbums() {

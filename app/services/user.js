@@ -28,9 +28,9 @@ class UserService {
     }
   }
 
-  static async getUser(params = {}) {
+  static async getUser(params = {}, exclude = []) {
     try {
-      const user = await db.User.findOne({ where: { [Op.or]: params } });
+      const user = await db.User.findOne({ attributes: { exclude }, where: { [Op.or]: params } });
       return user ? user.dataValues : { error: 'User is not registered.' };
     } catch (err) {
       throw errors.databaseError(err);
