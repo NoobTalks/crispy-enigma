@@ -1,3 +1,5 @@
+const { ROLES } = require('../constants');
+
 exports.signUpDTO = (params = {}) => {
   const { first_name, last_name, email, password } = params;
   return {
@@ -31,6 +33,6 @@ exports.signUpAdminDTO = (params = {}) => {
     lastName: last_name,
     email,
     password,
-    role: 'administrator'
+    role: ROLES.admin
   };
 };

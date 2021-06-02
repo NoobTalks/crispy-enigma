@@ -11,8 +11,14 @@ const isValidPassword = (password, passwordEncrypted) => bcryptjs.compareSync(pa
 
 const generateToken = payload => jwt.encode(payload, process.env.JWT_KEY_SECRET);
 
+const decodeToken = token => jwt.decode(token, process.env.JWT_KEY_SECRET);
+
+const isObjectEqual = (original, compare) => JSON.stringify(original) === JSON.stringify(compare);
+
 module.exports = {
   encryptPassword,
   isValidPassword,
-  generateToken
+  generateToken,
+  decodeToken,
+  isObjectEqual
 };
