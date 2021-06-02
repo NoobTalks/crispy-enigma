@@ -3,6 +3,7 @@ const axios = require('axios');
 const app = require('../../app');
 const { messages, dataUser, albums } = require('../__mocks__');
 const { statusCodes } = require('../../app/helpers');
+const { AUTH_HEADER } = require('../../app/constants');
 
 jest.mock('axios');
 axios.get.mockReturnValue({ data: albums.listAlbums[1] });
@@ -21,7 +22,7 @@ describe('Test buy album', () => {
       .then(res => res.body);
     request(app)
       .get('/albums/1')
-      .set('token', token)
+      .set(AUTH_HEADER, token)
       .expect(statusCodes.successful, done);
   });
 
@@ -32,10 +33,10 @@ describe('Test buy album', () => {
       .then(res => res.body);
     await request(app)
       .get('/albums/2')
-      .set('token', token);
+      .set(AUTH_HEADER, token);
     request(app)
       .get('/albums/2')
-      .set('token', token)
+      .set(AUTH_HEADER, token)
       .then(res => {
         expect(res.body).toEqual(messages.albumBuy);
         done();
@@ -58,7 +59,7 @@ describe('Test buy album', () => {
       .then(res => res.body);
     request(app)
       .get('/albums/-1')
-      .set('token', token)
+      .set(AUTH_HEADER, token)
       .then(res => {
         expect(res.body).toEqual(messages.idNotValid);
         done();

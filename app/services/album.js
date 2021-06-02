@@ -5,7 +5,7 @@ const db = require('../models');
 
 class AlbumService {
   static async getAlbums() {
-    const { data } = await axios.get(ALBUM_SUPPLIER);
+    const { data } = await axios.get(`${ALBUM_SUPPLIER}${OPT_SUPPLIER_JP.albums}`);
     return data;
   }
 
