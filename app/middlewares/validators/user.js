@@ -39,19 +39,22 @@ const validateGetUsersDTO = (req, res, next) => {
   }
 };
 
-const validateIdentity = async (req, res, next) => {
+const validateAuthentication = async (req, res, next) => {
   try {
-    const token = utils.decodeToken(req.header(TOKEN));
-    const { error, ...user } = await UserService.getUser({ id: token.id }, ['password']);
+    const token = req.header(TOKEN);
+    if (!token) {
+      throw errors.unauthorized('Token empty.');
+    }
+    const tokenDecode = utils.decodeToken(token);
+    const { error, ...user } = await UserService.getUser({ id: tokenDecode.id }, ['password']);
     if (error) {
       throw errors.unauthorized('User does not exist in the DB.');
     }
-    const verifyUser = utils.isObjectEqual(token, user);
+    const verifyUser = utils.isObjectEqual(tokenDecode, user);
     if (!verifyUser) {
       throw errors.unauthorized('Token data does not match DB');
     }
-    // eslint-disable-next-line require-atomic-updates
-    req.user = user;
+    res.locals.user = user;
     return next();
   } catch (err) {
     return next(err);
@@ -60,7 +63,7 @@ const validateIdentity = async (req, res, next) => {
 
 const isAdmin = (req, res, next) => {
   try {
-    const { role, email } = req.user;
+    const { role, email } = res.locals.user;
     if (role !== ROLES.admin) {
       throw errors.unauthorized(`User ${email} isn't administrator`);
     }
@@ -74,6 +77,6 @@ module.exports = {
   validateSignUpDTO,
   validateSignInDTO,
   validateGetUsersDTO,
-  validateIdentity,
+  validateAuthentication,
   isAdmin
 };

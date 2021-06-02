@@ -3,7 +3,7 @@ const { AlbumService } = require('../services');
 
 const getAlbums = async (req, res, next) => {
   try {
-    const { email } = req.user;
+    const { email } = res.locals.user;
     const albums = await AlbumService.getAlbums();
     logger.info(`User ${email} request to bring all the albums`);
     return res.json(albums);
