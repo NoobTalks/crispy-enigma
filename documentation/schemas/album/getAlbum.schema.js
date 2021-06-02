@@ -1,8 +1,10 @@
+const { AUTH_HEADER } = require('../../../app/constants');
+
 exports.GetAlbums = {
   parameters: {
     head: {
       type: 'string',
-      description: 'Token'
+      description: AUTH_HEADER
     }
   },
   responses: {

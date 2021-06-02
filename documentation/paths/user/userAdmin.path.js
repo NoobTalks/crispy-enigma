@@ -1,3 +1,5 @@
+const { AUTH_HEADER } = require('../../../app/constants');
+
 module.exports = {
   '/admin/users': {
     post: {
@@ -7,7 +9,7 @@ module.exports = {
       operationId: 'userAdmin',
       parameters: [
         {
-          name: 'token',
+          name: AUTH_HEADER,
           in: 'header',
           required: true,
           type: 'string',

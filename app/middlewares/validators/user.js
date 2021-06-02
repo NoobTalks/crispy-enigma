@@ -1,4 +1,4 @@
-const { TOKEN, ROLES } = require('../../constants');
+const { AUTH_HEADER, ROLES } = require('../../constants');
 const { errors, utils } = require('../../helpers');
 const { CONFIG_JOI, userSchema } = require('../schemas');
 const { UserService } = require('../../services');
@@ -41,7 +41,7 @@ const validateGetUsersDTO = (req, res, next) => {
 
 const validateAuthentication = async (req, res, next) => {
   try {
-    const token = req.header(TOKEN);
+    const token = req.header(AUTH_HEADER);
     if (!token) {
       throw errors.unauthorized('Token empty.');
     }

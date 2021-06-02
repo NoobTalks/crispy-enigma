@@ -3,6 +3,6 @@ exports.ROLES = {
   default: 'regular'
 };
 
-exports.TOKEN = 'token';
+exports.AUTH_HEADER = 'Authorization';
 
 exports.ALBUM_SUPPLIER = 'https://jsonplaceholder.typicode.com/albums';

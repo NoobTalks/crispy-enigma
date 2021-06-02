@@ -1,3 +1,5 @@
+const { AUTH_HEADER } = require('../../../app/constants');
+
 module.exports = {
   '/albums': {
     get: {
@@ -7,7 +9,7 @@ module.exports = {
       operationId: 'GetAlbums',
       parameters: [
         {
-          name: 'token',
+          name: AUTH_HEADER,
           in: 'header',
           required: true,
           description: 'Token generated when authenticating in the system.',

@@ -1,6 +1,7 @@
 /* eslint-disable global-require */
 const request = require('supertest');
 const app = require('../../app');
+const { AUTH_HEADER } = require('../../app/constants');
 const { statusCodes } = require('../../app/helpers');
 const { dataUser } = require('../__mocks__');
 
@@ -19,7 +20,7 @@ describe('Register a administrator user', () => {
       .then(res => res.body);
     await request(app)
       .post('/admin/users')
-      .set('token', token)
+      .set(AUTH_HEADER, token)
       .send(dataUser.signUp)
       .then(res => {
         expect(res.statusCode).toBe(statusCodes.created);
@@ -37,7 +38,7 @@ describe('Register a administrator user', () => {
       .then(res => res.body);
     await request(app)
       .post('/admin/users')
-      .set('token', token)
+      .set(AUTH_HEADER, token)
       .send(dataUser.signUp)
       .then(res => {
         expect(res.statusCode).toBe(statusCodes.created);
@@ -55,7 +56,7 @@ describe('Register a administrator user', () => {
     const { token } = JSON.parse(logInUser.text);
     const res = await request(app)
       .post('/admin/users')
-      .set('token', token)
+      .set(AUTH_HEADER, token)
       .send(dataUser.signUp);
     expect(res.statusCode).toBe(statusCodes.unauthorized);
     done();
@@ -64,7 +65,7 @@ describe('Register a administrator user', () => {
   it('should reject for token empty', async done => {
     const res = await request(app)
       .post('/admin/users')
-      .set('token', '')
+      .set(AUTH_HEADER, '')
       .send(dataUser.signInAdmin);
     expect(res.statusCode).toBe(statusCodes.unauthorized);
     done();
@@ -77,7 +78,7 @@ describe('Register a administrator user', () => {
       .then(res => res.body);
     const res = await request(app)
       .post('/admin/users')
-      .set('token', token);
+      .set(AUTH_HEADER, token);
     expect(res.statusCode).toBe(statusCodes.badRequest);
     done();
   });
