@@ -28,10 +28,10 @@ class UserService {
     }
   }
 
-  static async getUser(params = {}) {
+  static async getUser(params = {}, exclude = []) {
     try {
-      const user = await db.User.findOne({ where: { [Op.or]: params } });
-      return user || { error: 'User is not registered.' };
+      const user = await db.User.findOne({ attributes: { exclude }, where: { [Op.or]: params } });
+      return user ? user.dataValues : { error: 'User is not registered.' };
     } catch (err) {
       throw errors.databaseError(err);
     }
@@ -39,7 +39,9 @@ class UserService {
 
   static async updateUser(id, user) {
     try {
-      user.password = utils.encryptPassword(user.password);
+      if (user.password) {
+        user.password = utils.encryptPassword(user.password);
+      }
       const userUpdate = await db.User.update(user, { where: { id } });
       return userUpdate;
     } catch (err) {

@@ -1,5 +1,6 @@
 /* eslint-disable global-require */
 const axios = require('axios');
+const { ALBUM_SUPPLIER, OPT_SUPPLIER_JP } = require('../../app/constants');
 const { AlbumService, UserService } = require('../../app/services');
 const { albums, dataUser } = require('../__mocks__');
 
@@ -9,7 +10,7 @@ axios.get.mockReturnValue({ data: albums.listAlbums });
 describe('Album service', () => {
   it('should request to external API', async () => {
     await AlbumService.getAlbums();
-    expect(axios.get).toHaveBeenCalledWith('https://jsonplaceholder.typicode.com/albums');
+    expect(axios.get).toHaveBeenCalledWith(`${ALBUM_SUPPLIER}${OPT_SUPPLIER_JP.albums}`);
   });
 
   it('should get a list of albums', async () => {

@@ -1,6 +1,7 @@
 /* eslint-disable global-require */
 const request = require('supertest');
 const app = require('../../app');
+const { AUTH_HEADER } = require('../../app/constants');
 const { statusCodes } = require('../../app/helpers');
 const { dataUser } = require('../__mocks__');
 
@@ -8,36 +9,41 @@ describe('Register a administrator user', () => {
   beforeEach(async () => {
     const { UserService } = require('../../app/services');
     dataUser.signUpAdmin.password = '12345678';
+    dataUser.signUp.password = '12345678';
     await UserService.signUp(dataUser.signUpAdmin);
   });
 
   it('should sign up a administrator user', async done => {
-    const logInAdmin = await request(app)
+    const { token } = await request(app)
       .post('/users/sessions')
-      .send(dataUser.signInAdmin);
-    const { token } = JSON.parse(logInAdmin.text);
-    const res = await request(app)
+      .send(dataUser.signInAdmin)
+      .then(res => res.body);
+    await request(app)
       .post('/admin/users')
-      .set('token', token)
-      .send(dataUser.signUp);
-    expect(res.statusCode).toBe(statusCodes.created);
-    done();
+      .set(AUTH_HEADER, token)
+      .send(dataUser.signUp)
+      .then(res => {
+        expect(res.statusCode).toBe(statusCodes.created);
+        done();
+      });
   });
 
   it('should update an existing user and grant the admin role', async done => {
     await request(app)
       .post('/users')
       .send(dataUser.signUp);
-    const logInAdmin = await request(app)
+    const { token } = await request(app)
       .post('/users/sessions')
-      .send(dataUser.signInAdmin);
-    const { token } = JSON.parse(logInAdmin.text);
-    const res = await request(app)
+      .send(dataUser.signInAdmin)
+      .then(res => res.body);
+    await request(app)
       .post('/admin/users')
-      .set('token', token)
-      .send(dataUser.signUp);
-    expect(res.statusCode).toBe(statusCodes.created);
-    done();
+      .set(AUTH_HEADER, token)
+      .send(dataUser.signUp)
+      .then(res => {
+        expect(res.statusCode).toBe(statusCodes.created);
+        done();
+      });
   });
 
   it('should reject to created for permissions', async done => {
@@ -50,7 +56,7 @@ describe('Register a administrator user', () => {
     const { token } = JSON.parse(logInUser.text);
     const res = await request(app)
       .post('/admin/users')
-      .set('token', token)
+      .set(AUTH_HEADER, token)
       .send(dataUser.signUp);
     expect(res.statusCode).toBe(statusCodes.unauthorized);
     done();
@@ -59,20 +65,20 @@ describe('Register a administrator user', () => {
   it('should reject for token empty', async done => {
     const res = await request(app)
       .post('/admin/users')
-      .set('token', '')
+      .set(AUTH_HEADER, '')
       .send(dataUser.signInAdmin);
     expect(res.statusCode).toBe(statusCodes.unauthorized);
     done();
   });
 
   it('should reject for data user empty', async done => {
-    const logInAdmin = await request(app)
+    const { token } = await request(app)
       .post('/users/sessions')
-      .send(dataUser.signInAdmin);
-    const { token } = JSON.parse(logInAdmin.text);
+      .send(dataUser.signInAdmin)
+      .then(res => res.body);
     const res = await request(app)
       .post('/admin/users')
-      .set('token', token);
+      .set(AUTH_HEADER, token);
     expect(res.statusCode).toBe(statusCodes.badRequest);
     done();
   });

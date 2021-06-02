@@ -3,6 +3,7 @@ const axios = require('axios');
 const app = require('../../app');
 const { statusCodes } = require('../../app/helpers');
 const { dataUser, albums } = require('../__mocks__');
+const { AUTH_HEADER } = require('../../app/constants');
 
 jest.mock('axios');
 
@@ -19,18 +20,21 @@ describe('Test get albums', () => {
       .post('/users/sessions')
       .send(dataUser.signIn)
       .then(tokenRequest => tokenRequest.body);
-    request(app)
+    await request(app)
       .get('/albums')
-      .set('token', token)
+      .set(AUTH_HEADER, token)
       .then(res => {
         expect(res.body).toEqual(albums.listAlbums);
         done();
       });
   });
 
-  it('should reject for token empty', done => {
-    request(app)
+  it('should reject for token empty', async done => {
+    await request(app)
       .get('/albums')
-      .expect(statusCodes.unauthorized, done);
+      .then(res => {
+        expect(res.statusCode).toBe(statusCodes.unauthorized);
+        done();
+      });
   });
 });

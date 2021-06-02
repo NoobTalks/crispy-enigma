@@ -1,16 +1,17 @@
 const axios = require('axios').default;
 const { errors } = require('../helpers');
+const { ALBUM_SUPPLIER, OPT_SUPPLIER_JP } = require('../constants');
 const db = require('../models');
 
 class AlbumService {
   static async getAlbums() {
-    const { data } = await axios.get('https://jsonplaceholder.typicode.com/albums');
+    const { data } = await axios.get(ALBUM_SUPPLIER);
     return data;
   }
 
   static async getAlbum(id) {
     try {
-      const { data } = await axios.get(`https://jsonplaceholder.typicode.com/albums/${id}`);
+      const { data } = await axios.get(`${ALBUM_SUPPLIER}${OPT_SUPPLIER_JP.albums}/${id}`);
       return data;
     } catch {
       throw errors.notFound('Album not found');

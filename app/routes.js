@@ -5,9 +5,10 @@ const { signUp, signIn, listUsers, signUpAdmin, getAlbums, buyAlbum } = require(
 const {
   validateSignUpDTO,
   validateSignInDTO,
-  validateGetUsersDTO
+  validateGetUsersDTO,
+  validateAuthentication,
+  isAdmin
 } = require('./middlewares/validators/user');
-const { validateToken } = require('./middlewares/validators/token');
 const { jsonSwagger } = require('./controllers/documentation');
 const { validateAlbum } = require('./middlewares/validators/album');
 
@@ -16,9 +17,9 @@ exports.init = app => {
   app.get('/docs', redoc({ title: 'API docs', specUrl: '/docs/swagger' }));
   app.get('/health', healthCheck);
   app.get('/users', [validateGetUsersDTO], listUsers);
-  app.get('/albums', [validateToken], getAlbums);
-  app.get('/albums/:id', [validateToken, validateAlbum], buyAlbum);
+  app.get('/albums', [validateAuthentication], getAlbums);
+  app.get('/albums/:id', [validateAuthentication, validateAlbum], buyAlbum);
   app.post('/users', [validateSignUpDTO], signUp);
   app.post('/users/sessions', [validateSignInDTO], signIn);
-  app.post('/admin/users', [validateToken, validateSignUpDTO], signUpAdmin);
+  app.post('/admin/users', [validateAuthentication, validateSignUpDTO, isAdmin], signUpAdmin);
 };

@@ -30,7 +30,7 @@ const signUp = async (req, res, next) => {
 const signIn = async (req, res, next) => {
   try {
     const userDTO = userMapper.signInDTO(req.body);
-    const { error, firstName, lastName, role, email, password } = await UserService.getUser({
+    const { error, password, ...user } = await UserService.getUser({
       email: userDTO.email
     });
     if (error) {
@@ -40,7 +40,7 @@ const signIn = async (req, res, next) => {
     if (!confirmPassword) {
       throw errors.unauthorized('Email or password invalid.');
     }
-    const token = generateToken({ firstName, lastName, role, email });
+    const token = generateToken(user);
     logger.info({
       email: userDTO.email,
       token,
