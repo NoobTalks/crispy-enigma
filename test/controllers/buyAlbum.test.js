@@ -22,7 +22,7 @@ describe('Test buy album', () => {
       .then(res => res.body);
     request(app)
       .get('/albums/1')
-      .set(AUTH_HEADER, token)
+      .set(AUTH_HEADER, `bearer ${token}`)
       .expect(statusCodes.successful, done);
   });
 
@@ -33,10 +33,10 @@ describe('Test buy album', () => {
       .then(res => res.body);
     await request(app)
       .get('/albums/2')
-      .set(AUTH_HEADER, token);
+      .set(AUTH_HEADER, `bearer ${token}`);
     request(app)
       .get('/albums/2')
-      .set(AUTH_HEADER, token)
+      .set(AUTH_HEADER, `bearer ${token}`)
       .then(res => {
         expect(res.body).toEqual(messages.albumBuy);
         done();
@@ -59,7 +59,7 @@ describe('Test buy album', () => {
       .then(res => res.body);
     request(app)
       .get('/albums/-1')
-      .set(AUTH_HEADER, token)
+      .set(AUTH_HEADER, `bearer ${token}`)
       .then(res => {
         expect(res.body).toEqual(messages.idNotValid);
         done();

@@ -41,11 +41,11 @@ const validateGetUsersDTO = (req, res, next) => {
 
 const validateAuthentication = async (req, res, next) => {
   try {
-    const token = req.header(AUTH_HEADER);
+    const token = req.header(AUTH_HEADER) ? req.header(AUTH_HEADER).split(' ')[1] : undefined;
     if (!token) {
       throw errors.unauthorized('Token empty.');
     }
-    const tokenDecode = utils.decodeToken(token);
+    const { jti, ...tokenDecode } = await utils.decodeToken(token);
     const { error, ...user } = await UserService.getUser({ id: tokenDecode.id }, ['password']);
     if (error) {
       throw errors.unauthorized('User does not exist in the DB.');
@@ -54,7 +54,8 @@ const validateAuthentication = async (req, res, next) => {
     if (!verifyUser) {
       throw errors.unauthorized('Token data does not match DB');
     }
-    res.locals.user = user;
+    res.locals.user = { ...user, jti };
+    res.locals.token = token;
     return next();
   } catch (err) {
     return next(err);

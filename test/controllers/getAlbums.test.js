@@ -22,7 +22,7 @@ describe('Test get albums', () => {
       .then(tokenRequest => tokenRequest.body);
     await request(app)
       .get('/albums')
-      .set(AUTH_HEADER, token)
+      .set(AUTH_HEADER, `bearer ${token}`)
       .then(res => {
         expect(res.body).toEqual(albums.listAlbums);
         done();
