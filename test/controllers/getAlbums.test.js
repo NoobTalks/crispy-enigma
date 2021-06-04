@@ -5,8 +5,6 @@ const { statusCodes } = require('../../app/helpers');
 const { dataUser, albums } = require('../__mocks__');
 const { AUTH_HEADER } = require('../../app/constants');
 
-jest.mock('axios');
-
 describe('Test get albums', () => {
   beforeEach(async () => {
     await request(app)

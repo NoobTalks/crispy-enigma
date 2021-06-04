@@ -32,4 +32,6 @@ exports.generateToken = payload =>
     );
   });
 
+exports.decodedToken = token => jwt.decode(token, process.env.JWT_KEY_SECRET);
+
 exports.isContentEqual = (original, compare) => JSON.stringify(original) === JSON.stringify(compare);

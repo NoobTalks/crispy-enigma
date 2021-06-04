@@ -1,12 +1,8 @@
 const request = require('supertest');
-const axios = require('axios');
 const app = require('../../app');
-const { messages, dataUser, albums } = require('../__mocks__');
+const { messages, dataUser } = require('../__mocks__');
 const { statusCodes } = require('../../app/helpers');
 const { AUTH_HEADER } = require('../../app/constants');
-
-jest.mock('axios');
-axios.get.mockReturnValue({ data: albums.listAlbums[1] });
 
 describe('Test buy album', () => {
   beforeEach(async () => {

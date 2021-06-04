@@ -20,6 +20,19 @@ class RedisService {
     client.setex(key, time, value);
     client.quit();
   }
+
+  static del(key) {
+    return new Promise((resolve, reject) => {
+      const client = redis.createClient();
+      client.del(key, (err, reply) => {
+        if (err) {
+          reject(errors.conflictServer(err));
+        }
+        resolve(reply);
+      });
+      client.quit();
+    });
+  }
 }
 
 module.exports = RedisService;

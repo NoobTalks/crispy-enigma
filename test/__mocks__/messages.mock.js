@@ -70,5 +70,9 @@ exports.messages = {
   idNotValid: {
     message: 'el ID ingresado no es valido',
     internalCode: 'badRequest'
+  },
+  tokenExpired: {
+    message: 'token invalid.',
+    internalCode: 'unauthorized'
   }
 };
