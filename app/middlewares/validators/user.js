@@ -46,7 +46,7 @@ const validateAuthentication = async (req, res, next) => {
     if (error) {
       throw errors.unauthorized('User does not exist in the DB.');
     }
-    const verifyUser = utils.isObjectEqual(user, userDB);
+    const verifyUser = utils.isContentEqual(user, userDB);
     if (!verifyUser) {
       throw errors.unauthorized('Token data does not match DB');
     }
