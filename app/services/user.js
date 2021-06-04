@@ -1,5 +1,6 @@
 const { Op } = require('sequelize');
-const { errors, utils } = require('../helpers');
+const utils = require('../helpers/utils');
+const errors = require('../helpers/errors');
 const db = require('../models');
 
 class UserService {

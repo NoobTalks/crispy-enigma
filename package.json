@@ -112,6 +112,7 @@
     "prettier": "^1.15.3",
     "prettier-eslint": "^9.0.1",
     "prompt": "^1.0.0",
+    "redis-mock": "^0.56.3",
     "sequelize-cli": "^5.5.1",
     "supertest": "^4.0.2"
   },
