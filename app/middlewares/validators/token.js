@@ -1,3 +1,4 @@
+const { logger } = require('express-wolox-logger');
 const jwt = require('jsonwebtoken');
 const { AUTH_HEADER } = require('../../constants');
 const { errors, utils } = require('../../helpers');
@@ -20,6 +21,7 @@ const validateToken = async (req, res, next) => {
     const tokenRedis = await RedisService.get(jti);
     const validToken = await utils.isContentEqual(tokenRedis, token);
     if (!validToken) {
+      logger.info(`${tokenUser.email} tried to login with expired token (REDIS)`);
       throw errors.unauthorized('token invalid.');
     }
     res.locals.user = tokenUser;
