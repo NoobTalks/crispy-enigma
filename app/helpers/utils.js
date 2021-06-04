@@ -29,24 +29,11 @@ const generateToken = payload =>
     );
   });
 
-const decodeToken = token =>
-  new Promise((resolve, reject) => {
-    jwt.verify(token, process.env.JWT_KEY_SECRET, (err, decoded) => {
-      if (err) {
-        reject(err);
-      }
-      delete decoded.iat;
-      delete decoded.exp;
-      resolve(decoded);
-    });
-  });
-
 const isObjectEqual = (original, compare) => JSON.stringify(original) === JSON.stringify(compare);
 
 module.exports = {
   encryptPassword,
   isValidPassword,
   generateToken,
-  decodeToken,
   isObjectEqual
 };

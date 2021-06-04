@@ -1,4 +1,4 @@
-const { AUTH_HEADER, ROLES } = require('../../constants');
+const { ROLES } = require('../../constants');
 const { errors, utils } = require('../../helpers');
 const { CONFIG_JOI, userSchema } = require('../schemas');
 const { UserService } = require('../../services');
@@ -41,21 +41,15 @@ const validateGetUsersDTO = (req, res, next) => {
 
 const validateAuthentication = async (req, res, next) => {
   try {
-    const token = req.header(AUTH_HEADER) ? req.header(AUTH_HEADER).split(' ')[1] : undefined;
-    if (!token) {
-      throw errors.unauthorized('Token empty.');
-    }
-    const { jti, ...tokenDecode } = await utils.decodeToken(token);
-    const { error, ...user } = await UserService.getUser({ id: tokenDecode.id }, ['password']);
+    const { user } = res.locals;
+    const { error, ...userDB } = await UserService.getUser({ id: user.id }, ['password']);
     if (error) {
       throw errors.unauthorized('User does not exist in the DB.');
     }
-    const verifyUser = utils.isObjectEqual(tokenDecode, user);
+    const verifyUser = utils.isObjectEqual(user, userDB);
     if (!verifyUser) {
       throw errors.unauthorized('Token data does not match DB');
     }
-    res.locals.user = { ...user, jti };
-    res.locals.token = token;
     return next();
   } catch (err) {
     return next(err);
