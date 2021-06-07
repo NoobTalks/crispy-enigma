@@ -1,6 +1,5 @@
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const btoa = require('btoa');
 const { RedisService } = require('../services');
 
 exports.encryptPassword = password => {
@@ -13,7 +12,8 @@ exports.isValidPassword = (password, passwordEncrypted) => bcryptjs.compareSync(
 
 exports.generateToken = payload =>
   new Promise((resolve, reject) => {
-    const key = `${payload.id}:${btoa(Math.floor(new Date().getTime() / 1000))}`;
+    const date = Math.floor(new Date().getTime() / 1000);
+    const key = `${payload.id}:${Buffer.from(date.toString()).toString('base64')}`;
     const expiryTime = Number(process.env.JWT_EXPIRY_TIME);
     return jwt.sign(
       payload,
@@ -22,11 +22,11 @@ exports.generateToken = payload =>
         jwtid: key,
         expiresIn: expiryTime
       },
-      (err, token) => {
+      async (err, token) => {
         if (err) {
           reject(err);
         }
-        RedisService.set(key, expiryTime, token);
+        await RedisService.set(key, expiryTime, token);
         resolve(token);
       }
     );

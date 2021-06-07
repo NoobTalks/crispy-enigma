@@ -1,4 +1,8 @@
 exports.messages = {
+  userNotRegister: {
+    message: 'User is not registered.',
+    internalCode: 'unauthorized'
+  },
   emailRequired: {
     message: [
       {
@@ -15,6 +19,29 @@ exports.messages = {
   },
   passwordRequired: {
     message: [
+      {
+        message: '"password" is required',
+        path: ['password'],
+        type: 'any.required',
+        context: {
+          label: 'password',
+          key: 'password'
+        }
+      }
+    ],
+    internalCode: 'badRequest'
+  },
+  emailAndPasswordRequired: {
+    message: [
+      {
+        message: '"email" is required',
+        path: ['email'],
+        type: 'any.required',
+        context: {
+          label: 'email',
+          key: 'email'
+        }
+      },
       {
         message: '"password" is required',
         path: ['password'],
@@ -74,5 +101,17 @@ exports.messages = {
   tokenExpired: {
     message: 'token invalid.',
     internalCode: 'unauthorized'
+  },
+  dataInvalid: {
+    message: 'Email or password invalid.',
+    internalCode: 'unauthorized'
+  },
+  closeSessions: {
+    message: '1 sessions closed',
+    user: 'yesid@wolox.com.co'
+  },
+  sessionsNotFound: {
+    message: 'no active sessions found',
+    internalCode: 'notFound'
   }
 };

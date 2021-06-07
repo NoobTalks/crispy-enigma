@@ -1,7 +1,15 @@
 // const controller = require('./controllers/controller');
 const redoc = require('redoc-express');
 const { healthCheck } = require('./controllers/healthCheck');
-const { signUp, signIn, listUsers, signUpAdmin, getAlbums, buyAlbum } = require('./controllers');
+const {
+  signUp,
+  signIn,
+  listUsers,
+  signUpAdmin,
+  getAlbums,
+  buyAlbum,
+  closeSessions
+} = require('./controllers');
 const {
   validateSignUpDTO,
   validateSignInDTO,
@@ -22,5 +30,6 @@ exports.init = app => {
   app.get('/albums/:id', [validateToken, validateAuthentication, validateAlbum], buyAlbum);
   app.post('/users', [validateSignUpDTO], signUp);
   app.post('/users/sessions', [validateSignInDTO], signIn);
+  app.post('/users/sessions/invalidate_all', [validateSignInDTO], closeSessions);
   app.post('/admin/users', [validateToken, validateAuthentication, validateSignUpDTO, isAdmin], signUpAdmin);
 };

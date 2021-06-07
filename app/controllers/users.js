@@ -1,7 +1,22 @@
 const { logger } = require('express-wolox-logger');
 const { errors, statusCodes, utils } = require('../helpers');
 const { userMapper } = require('../mappers');
-const { UserService } = require('../services');
+const { UserService, RedisService } = require('../services');
+
+const verifyUser = async req => {
+  const userDTO = userMapper.signInDTO(req.body);
+  const { error, password, ...user } = await UserService.getUser({
+    email: userDTO.email
+  });
+  if (error) {
+    throw errors.unauthorized(error);
+  }
+  const confirmPassword = utils.isValidPassword(userDTO.password, password);
+  if (!confirmPassword) {
+    throw errors.unauthorized('Email or password invalid.');
+  }
+  return user;
+};
 
 const signUp = async (req, res, next) => {
   try {
@@ -28,21 +43,10 @@ const signUp = async (req, res, next) => {
 
 const signIn = async (req, res, next) => {
   try {
-    const userDTO = userMapper.signInDTO(req.body);
-    const { error, password, ...user } = await UserService.getUser({
-      email: userDTO.email
-    });
-    if (error) {
-      throw errors.unauthorized(error);
-    }
-    const confirmPassword = utils.isValidPassword(userDTO.password, password);
-    if (!confirmPassword) {
-      throw errors.unauthorized('Email or password invalid.');
-    }
+    const user = await verifyUser(req);
     const token = await utils.generateToken(user);
-
     logger.info({
-      email: userDTO.email,
+      email: user.email,
       token,
       message: 'Token generated'
     });
@@ -66,8 +70,30 @@ const listUsers = async (req, res, next) => {
   }
 };
 
+const closeSessions = async (req, res, next) => {
+  try {
+    const { id, email } = await verifyUser(req);
+    const tokens = await RedisService.getTokens(id);
+    if (!tokens.length) {
+      throw errors.notFound('no active sessions found');
+    }
+    for (const token of tokens) {
+      await RedisService.del(token);
+    }
+    const msg = {
+      message: `${tokens.length} sessions closed`,
+      user: email
+    };
+    logger.info(msg);
+    return res.json(msg);
+  } catch (err) {
+    return next(err);
+  }
+};
+
 module.exports = {
   signUp,
   signIn,
-  listUsers
+  listUsers,
+  closeSessions
 };

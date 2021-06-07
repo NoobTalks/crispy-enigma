@@ -15,10 +15,30 @@ class RedisService {
     });
   }
 
+  static getTokens(idUser) {
+    return new Promise((resolve, reject) => {
+      const client = redis.createClient();
+      client.keys(`${idUser}:*`, (err, reply) => {
+        if (err) {
+          reject(errors.conflictServer(err));
+        }
+        resolve(reply);
+      });
+      client.quit();
+    });
+  }
+
   static set(key, time, value) {
-    const client = redis.createClient();
-    client.setex(key, time, value);
-    client.quit();
+    return new Promise((resolve, reject) => {
+      const client = redis.createClient();
+      client.setex(key, time, value, (err, reply) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(reply);
+      });
+      client.quit();
+    });
   }
 
   static del(key) {
