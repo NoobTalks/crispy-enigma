@@ -39,7 +39,7 @@ class AlbumService {
   static async getMyAlbumForId(idUser, idAlbum) {
     try {
       const album = await db.Sale.findOne({ where: { idUser, idAlbum } });
-      return album || { errorAlbum: 'You have not bought the album.' };
+      return album || { error: 'You have not bought the album.' };
     } catch (err) {
       throw errors.databaseError(err);
     }

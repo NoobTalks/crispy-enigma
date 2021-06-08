@@ -18,8 +18,8 @@ const buyAlbum = async (req, res, next) => {
   try {
     const { params } = req;
     const { id, email } = res.locals.user;
-    const { errorAlbum } = await AlbumService.getMyAlbumForId(id, params.id);
-    if (!errorAlbum) {
+    const { error } = await AlbumService.getMyAlbumForId(id, params.id);
+    if (!error) {
       throw errors.conflictServer('you already bought this album');
     }
     const album = await AlbumService.getAlbum(params.id);

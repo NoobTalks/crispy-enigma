@@ -18,7 +18,6 @@ module.exports = (sequelize, DataTypes) => {
     Sale.belongsTo(models.User, {
       foreignKey: 'idUser'
     });
-    // associations can be defined here
   };
   return Sale;
 };

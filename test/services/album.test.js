@@ -65,7 +65,7 @@ describe('Album service', () => {
 
   it('should get a album (0)', async () => {
     const res = await AlbumService.getMyAlbumForId(1, 1);
-    expect(res.errorAlbum).toBe('You have not bought the album.');
+    expect(res.error).toBe('You have not bought the album.');
   });
 
   it('should reject for invalid data', async () => {
