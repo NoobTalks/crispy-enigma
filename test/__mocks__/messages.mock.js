@@ -79,7 +79,7 @@ exports.messages = {
     ]
   },
   onlyMyAlbums: {
-    message: 'You can only see your album, Direct to http://localhost:8081/users/1/albums',
+    message: `You can only see your album, Direct to http://localhost:${process.env.PORT}/users/1/albums`,
     internalCode: 'unauthorized'
   },
   userNotExist: {
