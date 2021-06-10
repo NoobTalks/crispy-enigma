@@ -1,17 +1,17 @@
 const axios = require('axios').default;
 const { errors } = require('../helpers');
-const { ALBUM_SUPPLIER, OPT_SUPPLIER_JP } = require('../constants');
+const { ALBUM_SUPPLIER, PATH_JSONPLACEHOLDER } = require('../constants');
 const db = require('../models');
 
 class AlbumService {
   static async getAlbums() {
-    const { data } = await axios.get(`${ALBUM_SUPPLIER}${OPT_SUPPLIER_JP.albums}`);
+    const { data } = await axios.get(`${ALBUM_SUPPLIER}${PATH_JSONPLACEHOLDER.albums}`);
     return data;
   }
 
   static async getAlbum(id) {
     try {
-      const { data } = await axios.get(`${ALBUM_SUPPLIER}${OPT_SUPPLIER_JP.albums}/${id}`);
+      const { data } = await axios.get(`${ALBUM_SUPPLIER}${PATH_JSONPLACEHOLDER.albums}/${id}`);
       return data;
     } catch {
       throw errors.notFound('Album not found');

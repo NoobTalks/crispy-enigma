@@ -7,6 +7,6 @@ exports.AUTH_HEADER = 'Authorization';
 
 exports.ALBUM_SUPPLIER = 'https://jsonplaceholder.typicode.com/';
 
-exports.OPT_SUPPLIER_JP = {
+exports.PATH_JSONPLACEHOLDER = {
   albums: 'albums'
 };
