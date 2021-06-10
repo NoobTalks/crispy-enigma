@@ -52,7 +52,7 @@ exports.SignUpAdmin = {
             }
           }
         },
-        internal_code: {
+        internalCode: {
           type: 'string',
           example: 'badRequest'
         }
@@ -65,7 +65,7 @@ exports.SignUpAdmin = {
           type: 'string',
           example: "User yesid09@wolox.com.co isn't administrator"
         },
-        internal_code: {
+        internalCode: {
           type: 'string',
           example: 'unauthorized'
         }

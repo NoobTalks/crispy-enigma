@@ -1,7 +1,7 @@
 const signIn = require('./signIn.path');
 const signUp = require('./signUp.path');
 const getUsers = require('./getUsers.path');
-const userAdmin = require('./userAdmin.path');
+const userAdmin = require('./signUpAdmin.path');
 
 module.exports = {
   ...signIn,

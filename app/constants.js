@@ -5,4 +5,8 @@ exports.ROLES = {
 
 exports.AUTH_HEADER = 'Authorization';
 
-exports.ALBUM_SUPPLIER = 'https://jsonplaceholder.typicode.com/albums';
+exports.ALBUM_SUPPLIER = 'https://jsonplaceholder.typicode.com/';
+
+exports.PATH_JSONPLACEHOLDER = {
+  albums: 'albums'
+};

@@ -11,7 +11,7 @@ exports.messages = {
         }
       }
     ],
-    internal_code: 'badRequest'
+    internalCode: 'badRequest'
   },
   passwordRequired: {
     message: [
@@ -25,36 +25,50 @@ exports.messages = {
         }
       }
     ],
-    internal_code: 'badRequest'
+    internalCode: 'badRequest'
   },
   limitNegative: {
     message: [
       {
-        message: '"limit" must be a positive number',
+        message: '"limit" must be greater than or equal to 1',
         path: ['limit'],
-        type: 'number.positive',
+        type: 'number.min',
         context: {
-          label: 'limit',
+          limit: 1,
           value: -2,
+          label: 'limit',
           key: 'limit'
         }
       }
     ],
-    internal_code: 'badRequest'
+    internalCode: 'badRequest'
   },
   sinceNegative: {
     message: [
       {
-        message: '"since" must be a positive number',
+        message: '"since" must be greater than or equal to 1',
         path: ['since'],
-        type: 'number.positive',
+        type: 'number.min',
         context: {
-          label: 'since',
+          limit: 1,
           value: -2,
+          label: 'since',
           key: 'since'
         }
       }
     ],
-    internal_code: 'badRequest'
+    internalCode: 'badRequest'
+  },
+  albumBuy: {
+    message: 'you already bought this album',
+    internalCode: 'conflict'
+  },
+  tokenEmpty: {
+    message: 'Token empty.',
+    internalCode: 'unauthorized'
+  },
+  idNotValid: {
+    message: 'el ID ingresado no es valido',
+    internalCode: 'badRequest'
   }
 };

@@ -4,7 +4,7 @@ module.exports = {
   '/admin/users': {
     post: {
       tags: ['Admin'],
-      summary: 'User admin',
+      summary: 'Sign up admin',
       description: 'Register a user as administrator, if exist update the role.',
       operationId: 'userAdmin',
       parameters: [

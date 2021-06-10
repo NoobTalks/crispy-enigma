@@ -75,11 +75,16 @@ describe('sign in user', () => {
     await request(app)
       .post('/users')
       .send(dataUser.signUp);
-    const res = await request(app)
+    await request(app)
       .post('/users/sessions')
-      .send(dataUser.signIn);
-    const compare = JSON.parse(res.text);
-    expect(compare).toEqual(messages.emailRequired);
-    done();
+      .send(dataUser.signIn)
+      .then(res => {
+        const newMessage = {
+          message: [...messages.emailRequired.message, ...messages.passwordRequired.message],
+          internalCode: messages.emailRequired.internalCode
+        };
+        expect(res.body).toEqual(newMessage);
+        done();
+      });
   });
 });

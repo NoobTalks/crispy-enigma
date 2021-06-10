@@ -52,7 +52,7 @@ exports.SignUp = {
             }
           }
         },
-        internal_code: {
+        internalCode: {
           type: 'string',
           example: 'badRequest'
         }
@@ -74,7 +74,7 @@ exports.SignUp = {
             }
           }
         },
-        internal_code: {
+        internalCode: {
           type: 'string',
           example: 'badRequest'
         }
